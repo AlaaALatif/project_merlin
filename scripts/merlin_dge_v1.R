@@ -32,6 +32,13 @@ keep <- rowSums(cpm(dge) >= 1) >= 3
 dge <- dge[keep, , keep.lib.sizes=FALSE]
 # Compute normalization factors
 dge <- calcNormFactors(dge)
+# Write out normalized CPM counts
+normalized_cpm <- cpm(dge, normalized.lib.sizes = TRUE)
+normalized_cpm_df <- as.data.frame(normalized_cpm) %>%
+  rownames_to_column("gene_id")
+write.csv(normalized_cpm_df, 
+          "/Users/alaa/Documents/ucsf/data/suliman/merlin/counts/experiment1_normalized_counts_2024-12-23.csv",
+          row.names = FALSE)
 # Setup the design matrix
 metadata$hiv_diagnosis <- factor(metadata$hiv_diagnosis)
 metadata$library_pool  <- factor(metadata$library_pool)
